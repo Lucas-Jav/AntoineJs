@@ -12,5 +12,8 @@
     "enquirer": "^2.4.1",
     "yargs": "^17.7.2"
   },
-  "devDependencies": {}
+  "devDependencies": {},
+  "bin": {
+    "antoine": "/usr/bin/antoine.js"
+  }
 }
