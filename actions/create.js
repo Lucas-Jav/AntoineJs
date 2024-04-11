@@ -2,8 +2,26 @@ const { prompt } = require('enquirer');
 const fs = require('fs');
 const { execSync } = require('child_process');
 
-
 const create = async (name) => {
+    let projectName = name;
+    if(fs.existsSync(projectName)) {
+        if (fs.existsSync(projectName)) {
+            console.error(`\nA project with the name '${projectName}' already exists. Please choose a different name.\n`);
+        }
+
+        do {
+            projectName = (await prompt({
+                type: 'input',
+                name: 'projectName',
+                message: 'Enter a other project name:',
+            })).projectName;
+    
+            if (fs.existsSync(projectName)) {
+                console.error(`\nA project with the name '${projectName}' already exists. Please choose a different name.\n`);
+            }
+        } while (fs.existsSync(projectName));
+    }
+
     const response = await prompt([
         {
             type: 'confirm',
@@ -15,10 +33,11 @@ const create = async (name) => {
 
     const { useTypescript } = response;
 
-    console.log(`Creating project '${name}'...`);
+    console.log(`Creating project '${projectName}'...`);
 
-    fs.mkdirSync(name);
-    process.chdir(name);
+    // Criar o diretório do projeto
+    fs.mkdirSync(projectName);
+    process.chdir(projectName);
 
     // Estrutura de diretórios padrão
     const folders = [
@@ -29,7 +48,6 @@ const create = async (name) => {
         'database',
         'public',
         'resources',
-        'seeders',
         'resources/views',
         'routes',
         'storage',
@@ -46,17 +64,19 @@ const create = async (name) => {
 
     // Instalar dependências
     const dependencies = useTypescript ? ['typescript'] : [];
-    /* execSync(`npm install --save-dev @babel/core @babel/preset-env ${dependencies.join(' ')}`); */
-    execSync(`npm install --save-dev  ${dependencies.join(' ')}`);
+    execSync(`npm install --save-dev ${dependencies.join(' ')}`);
 
-    // Configurar Babel
-    fs.writeFileSync('.babelrc', `{"presets": ["@babel/preset-env"]}`);
+    // Configurar Babel (opcional)
+    if (!useTypescript) {
+        fs.writeFileSync('.babelrc', `{"presets": ["@babel/preset-env"]}`);
+    }
 
     // Exemplo de arquivo index.js
     fs.writeFileSync('index.js', '// Seu código aqui');
 
-    fs.writeFileSync('./config/config.js', 
-`module.exports = {
+    // Configuração do banco de dados (exemplo para PostgreSQL)
+    fs.writeFileSync('./config/config.js',
+        `module.exports = {
     dialect: "postgres",
     host: "localhost",
     username: "postgres",
@@ -65,12 +85,13 @@ const create = async (name) => {
     define: {
         timestamps: true,
     },
-};`)
+};`);
 
-console.log("\n🔥 project created successfully 🔥");
-console.log(`\n$ cd ${name}`);
-console.log("$ npm install\n");
+    console.log("\n🔥 project created successfully 🔥");
+    console.log(`\n$ cd ${projectName}`);
+    console.log("$ npm install\n");
 
 };
 
 module.exports = { create };
+
