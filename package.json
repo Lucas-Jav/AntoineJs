@@ -1,5 +1,5 @@
 {
-  "version": "1.0.1",
+  "version": "1.0.2",
   "name": "antoinejs",
   "license": "ISC",
   "author": "lucas",
@@ -16,6 +16,6 @@
     "yargs": "^17.7.2"
   },
   "bin": {
-    "antoine create": "./antoine.js"
+    "antoine": "./antoine.js"
   }
 }

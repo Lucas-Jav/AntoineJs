@@ -76,7 +76,7 @@ const create = async (name) => {
 
     // Configuração do banco de dados (exemplo para PostgreSQL)
     fs.writeFileSync('./config/config.js',
-        `module.exports = {
+`module.exports = {
     dialect: "postgres",
     host: "localhost",
     username: "postgres",
@@ -90,7 +90,6 @@ const create = async (name) => {
     console.log("\n🔥 project created successfully 🔥");
     console.log(`\n$ cd ${projectName}`);
     console.log("$ npm install\n");
-
 };
 
 module.exports = { create };
