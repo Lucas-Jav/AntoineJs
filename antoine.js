@@ -28,4 +28,11 @@ program
     // Implemente a lógica de execução de script aqui
   });
 
+program
+  .command('teste')
+  .description('Run a script')
+  .action((script) => {
+    execSync('sequelize-cli init ');
+  });
+
 program.parse(process.argv);

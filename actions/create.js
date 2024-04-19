@@ -66,6 +66,7 @@ const create = async (name) => {
     const dependencies = useTypescript ? ['typescript'] : [];
     execSync(`npm install --save-dev ${dependencies.join(' ')}`);
 
+
     // Configurar Babel (opcional)
     if (!useTypescript) {
         fs.writeFileSync('.babelrc', `{"presets": ["@babel/preset-env"]}`);
