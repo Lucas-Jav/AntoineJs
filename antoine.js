@@ -6,6 +6,8 @@ const { program } = require('commander');
 
 const { prompt } = require('enquirer');
 const { create } = require('./actions/create');
+const path = require('path');
+const { createMigrationFile } = require('./actions/migration');
 
 program
   .command('create <name>')
@@ -21,18 +23,8 @@ program
   });
 
 program
-  .command('run <script>')
-  .description('Run a script')
-  .action((script) => {
-    console.log(`Running script '${script}'...`);
-    // Implemente a lógica de execução de script aqui
-  });
-
-program
-  .command('teste')
-  .description('Run a script')
-  .action((script) => {
-    execSync('sequelize-cli init ');
-  });
+  .command('migration:create <name>')
+  .description('Create a new migration file')
+  .action(createMigrationFile);
 
 program.parse(process.argv);

@@ -1,6 +1,8 @@
 const { prompt } = require('enquirer');
 const fs = require('fs');
 const { execSync } = require('child_process');
+const path = require('path');
+const { createIndexModels, createConfigFile, createFileSequelizeJsInConfig, createFileRoutesJs, createIndexJsServer } = require('../utils/config');
 
 const create = async (name) => {
     let projectName = name;
@@ -43,50 +45,48 @@ const create = async (name) => {
     const folders = [
         'app',
         'app/Http',
+        'app/Http/Controllers',
+        'app/Http/Middleware',
+        'app/Mail',
         'app/Models',
-        'config',
-        'database',
-        'public',
-        'resources',
-        'resources/views',
-        'routes',
+        'app/Services',
+        "database",
+        "database/migrations",
+        "database/seeders",
         'storage',
-        'storage/images',
-        'storage/files',
+        'tests',
+        "config"
     ];
 
-    folders.forEach(folder => {
-        fs.mkdirSync(folder, { recursive: true });
-    });
 
     // Inicializar o projeto Node.js
     execSync('npm init -y');
 
     // Instalar dependências
-    const dependencies = useTypescript ? ['typescript'] : [];
-    execSync(`npm install --save-dev ${dependencies.join(' ')}`);
+    const devDependencies = ['nodemon', 'sequelize-cli'];
+    execSync(`npm install --save-dev ${devDependencies.join(' ')}`);
+    
+    const dependencies = ["express", "pg", "pg-hstore", "sequelize"];
+    execSync(`npm install ${dependencies.join(' ')}`);
+    
+    
+    execSync('npm install --save sequelize');
+    execSync('npx sequelize-cli init');
+    fs.rmSync('./config', { recursive: true });
+    fs.rmSync('./models', { recursive: true });
+    fs.rmSync('./seeders', { recursive: true });
+    fs.rmSync('./migrations', { recursive: true });
 
+    folders.forEach(folder => {
+        fs.mkdirSync(folder, { recursive: true });
+    });
 
-    // Configurar Babel (opcional)
-    if (!useTypescript) {
-        fs.writeFileSync('.babelrc', `{"presets": ["@babel/preset-env"]}`);
-    }
+    createIndexModels();
+    createConfigFile();
+    createFileRoutesJs();
+    createIndexJsServer();
+    createFileSequelizeJsInConfig();
 
-    // Exemplo de arquivo index.js
-    fs.writeFileSync('index.js', '// Seu código aqui');
-
-    // Configuração do banco de dados (exemplo para PostgreSQL)
-    fs.writeFileSync('./config/config.js',
-`module.exports = {
-    dialect: "postgres",
-    host: "localhost",
-    username: "postgres",
-    password: "123456",
-    database: "your-database",
-    define: {
-        timestamps: true,
-    },
-};`);
 
     console.log("\n🔥 project created successfully 🔥");
     console.log(`\n$ cd ${projectName}`);
@@ -94,4 +94,3 @@ const create = async (name) => {
 };
 
 module.exports = { create };
-
