@@ -8,11 +8,17 @@ const { prompt } = require('enquirer');
 const { create } = require('./actions/create');
 const path = require('path');
 const { createMigrationFile } = require('./actions/migration');
+const { createDatabase } = require('./actions/createDatabase');
 
 program
   .command('create <name>')
   .description('Create a new project')
   .action(create);
+
+program
+  .command('db:create')
+  .description('Create a new database')
+  .action(createDatabase);
 
 program
   .command('build')

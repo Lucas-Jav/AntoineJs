@@ -2,7 +2,7 @@ const { prompt } = require('enquirer');
 const fs = require('fs');
 const { execSync } = require('child_process');
 const path = require('path');
-const { createIndexModels, createConfigFile, createFileSequelizeJsInConfig, createFileRoutesJs, createIndexJsServer } = require('../utils/config');
+const { createIndexModels, createConfigFile, createFileSequelizeJsInConfig, createFileRoutesJs, createIndexJsServer, createFileDotEnv, createGitIgnore } = require('../utils/config');
 
 const create = async (name) => {
     let projectName = name;
@@ -31,9 +31,15 @@ const create = async (name) => {
             message: 'Use TypeScript?',
             initial: false,
         },
+        {
+            type: 'confirm',
+            name: 'useRateLimit',
+            message: 'Use express-rate-limit?',
+            initial: false,
+        },
     ]);
 
-    const { useTypescript } = response;
+    const { useTypescript, useRateLimit } = response;
 
     console.log(`Creating project '${projectName}'...`);
 
@@ -66,7 +72,22 @@ const create = async (name) => {
     const devDependencies = ['nodemon', 'sequelize-cli'];
     execSync(`npm install --save-dev ${devDependencies.join(' ')}`);
     
-    const dependencies = ["express", "pg", "pg-hstore", "sequelize"];
+    const dependencies = [
+        "express", 
+        "pg", 
+        "pg-hstore", 
+        "sequelize",
+        "dotenv",
+        "dotenv",
+        "sqlite3",
+        "mysql2"
+    ];
+
+    if(useRateLimit) {
+        dependencies.push("express-rate-limit")
+    }
+
+
     execSync(`npm install ${dependencies.join(' ')}`);
     
     
@@ -84,7 +105,9 @@ const create = async (name) => {
     createIndexModels();
     createConfigFile();
     createFileRoutesJs();
-    createIndexJsServer();
+    createFileDotEnv();
+    createGitIgnore();
+    createIndexJsServer(useRateLimit);
     createFileSequelizeJsInConfig();
 
 

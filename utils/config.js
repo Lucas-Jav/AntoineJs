@@ -19,12 +19,17 @@ const createIndexFile = () => {
 
 const createConfigFile = () => {
     fs.writeFileSync('./config/config.js', 
-`module.exports = {
-    dialect: "postgres",
-    host: "localhost",
-    username: "postgres",
-    password: "123456",
-    database: "your-database",
+`const { Sequelize } = require('sequelize');
+
+const dotenv = require('dotenv');
+dotenv.config();
+
+module.exports = {
+    dialect: process.env.DB_DATABASE || "postgres", // Default para postgres se não especificado
+    host: process.env.DB_HOST || "localhost",
+    username: process.env.DB_USERNAME || "root",
+    password: process.env.DB_PASSWORD || "123456",
+    database: process.env.DB_DATABASE_NAME || "your-database",
     define: {
         timestamps: true,
     },
@@ -114,19 +119,51 @@ routes.delete("/example/:id", ExampleController.delete);
 
 module.exports = routes;
 `
-);
+);}
+
+
+
+const createFileDotEnv = () => {
+    const envContent = 
+`DB_DATABASE=postgres
+DB_HOST=localhost
+DB_USERNAME=postgres
+DB_PASSWORD=123456
+DB_DATABASE_NAME=Antoinejs
+`
+    fs.writeFileSync('./.env', envContent);
+    fs.writeFileSync('./.env.example', envContent);
 }
 
-const createIndexJsServer = () => {
+const createGitIgnore = () => {
+    const ignoreContent = 
+`.env
+node_modules
+`
+    fs.writeFileSync('./.gitIgnore', ignoreContent);
+}
+
+const createIndexJsServer = (isExpressRateLimit) => {
     fs.writeFileSync('./index.js', 
 `
 const express = require("express");
 const routes = require("./routes.js");
+${isExpressRateLimit ? 
+`const rateLimit = require('express-rate-limit')` : ""}
+
+${isExpressRateLimit ? 
+`const limiter = rateLimit({
+    windowMs: 15 * 60 * 1000, // 15 minutos
+    max: 100 // limite de 100 requisições por IP
+});` : ""}
 
 const app = express();
 
 app.use(express.json());
 app.use(routes);
+${isExpressRateLimit ? 
+`app.use(limiter);
+` : ""}
 
 app.listen(3000);
 `
@@ -138,6 +175,8 @@ module.exports = {
     initProject, 
     installDependencies, 
     configureBabel, 
+    createFileDotEnv,
+    createGitIgnore,
     createIndexFile, 
     createConfigFile, 
     createIndexModels,
