@@ -2,7 +2,7 @@ const { prompt } = require('enquirer');
 const fs = require('fs');
 const { execSync } = require('child_process');
 const path = require('path');
-const { createIndexModels, createConfigFile, createFileSequelizeJsInConfig, createFileRoutesJs, createIndexJsServer, createFileDotEnv, createGitIgnore } = require('../utils/config');
+const { createIndexModels, createConfigFile, createFileSequelizeJsInConfig, createFileRoutesJs, createIndexJsServer, createFileDotEnv, createGitIgnore, createResources } = require('../utils/config');
 
 const create = async (name) => {
     let projectName = name;
@@ -56,6 +56,10 @@ const create = async (name) => {
         'app/Mail',
         'app/Models',
         'app/Services',
+        'resources',
+        'resources/css',
+        'resources/js',
+        'resources/views',
         "database",
         "database/migrations",
         "database/seeders",
@@ -80,7 +84,8 @@ const create = async (name) => {
         "dotenv",
         "dotenv",
         "sqlite3",
-        "mysql2"
+        "mysql2",
+        "ejs"
     ];
 
     if(useRateLimit) {
@@ -107,6 +112,7 @@ const create = async (name) => {
     createFileRoutesJs();
     createFileDotEnv();
     createGitIgnore();
+    createResources();
     createIndexJsServer(useRateLimit);
     createFileSequelizeJsInConfig();
 
