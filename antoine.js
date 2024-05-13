@@ -1,14 +1,8 @@
 #!/usr/bin/env node
-
-const fs = require('fs');
-const { execSync } = require('child_process');
 const { program } = require('commander');
-
-const { prompt } = require('enquirer');
-const { create } = require('./actions/create');
-const path = require('path');
-const { createMigrationFile } = require('./actions/migration');
-const { createDatabase } = require('./actions/createDatabase');
+const { create } = require('./actions/create/index');
+const { createDatabase } = require('./actions/db/createDatabase');
+const { createMigrationFile } = require('./actions/migration/createMigration');
 
 program
   .command('create <name>')
