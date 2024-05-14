@@ -37,6 +37,13 @@ function setupDependencies(projectName, useTypescript, useRateLimit) {
     process.chdir(projectName);
     execSync('npm init -y');
 
+    // Adiciona o script nodemon ao package.json
+    const packageJsonPath = './package.json';
+    let packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
+    packageJson.scripts = packageJson.scripts || {};
+    packageJson.scripts.dev = 'nodemon index.js';
+    fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
+
     installDependencies(useTypescript, useRateLimit);
     removeFolders(['./config', './models', './seeders', './migrations']);
 }
