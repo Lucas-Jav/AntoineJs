@@ -17,5 +17,6 @@
   },
   "bin": {
     "antoine": "antoine.js"
-  }
+  },
+  "preferGlobal": true
 }
