@@ -17,5 +17,9 @@
   },
   "bin": {
     "antoine": "antoine.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Lucas-Jav/antoinejs.git"
   }
 }
