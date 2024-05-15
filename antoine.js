@@ -4,20 +4,7 @@ const { create } = require('./actions/create/index');
 const { createDatabase } = require('./actions/db/createDatabase');
 const { createMigrationFile } = require('./actions/migration/createMigration');
 const packageJson = require('./package.json'); // Import package.json to access the version
-/* const fetch = require('node-fetch'); // Import fetch to check for updates
-
-async function checkForUpdates() {
-  try {
-    const response = await fetch('https://api.github.com/repos/Lucas-Jav/AntoineJs/releases/latest');
-    const data = await response.json();
-    const latestVersion = data.tag_name;
-    if (packageJson.version !== latestVersion) {
-      console.log(`A new version of AntoineJs is available: ${latestVersion}. You are currently on ${packageJson.version}. Consider updating to access new features.`);
-    }
-  } catch (error) {
-    console.error('Failed to check for updates:', error);
-  }
-} */
+const { consoleAntoine } = require('./utils/console');
 
 program
 .version(packageJson.version, '-v, --version', 'Display project version'); // Use version from package.json
@@ -39,4 +26,5 @@ program
 
 program.parse(process.argv);
 
-//checkForUpdates(); // Check for updates after parsing the commands
+// verifica a versão do projeto
+consoleAntoine.checkForUpdates();
