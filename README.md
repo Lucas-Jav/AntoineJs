@@ -7,7 +7,7 @@ Este é um projeto Node.js que fornece uma interface de linha de comando para cr
 - Node.js
 - npm
 
-## Instalação
+## Instalação para desenvolvimento
 
 1. Clone o repositório:
 ```bash
@@ -19,11 +19,24 @@ git clone git@github.com:Lucas-Jav/AntoineJs.git
 cd AntoineJs
 ```
 
+3. Adicione o projeto como cli:
+```bash
+npm link
+```
+
+## Instalação para uso
+
+1. Clone o repositório:
+```bash
+npm install -g antoinejs
+```
+
+
 ## Utilização
 1. Para criar um novo projeto, use o comando create seguido do nome do projeto:
 
 ```bash
-node antoine.js create nome_do_projeto
+antoine create nome_do_projeto
 ```
 
 2. Depois de criar o projeto, você pode navegar para o diretório do projeto com o comando cd:

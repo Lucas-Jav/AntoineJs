@@ -4,7 +4,8 @@ const createIndexJsServer = (isExpressRateLimit) => {
     fs.writeFileSync('./index.js', 
 `
 const express = require("express");
-const routes = require("./routes.js");
+const app = express();
+const routes = express.Router();
 const path = require('path');
 ${isExpressRateLimit ? 
 `const rateLimit = require('express-rate-limit')` : ""}
@@ -15,7 +16,17 @@ ${isExpressRateLimit ?
     max: 100 // limite de 100 requisições por IP
 });` : ""}
 
-const app = express();
+/* Routes */
+const apiRoutes = require("./routes/api");
+const webRoutes = require("./routes/web");
+
+
+// Usando as rotas da API com prefixo '/api'
+routes.use("/api", apiRoutes);
+
+// Usando as rotas do frontend
+routes.use("/", webRoutes);
+
 
 app.set('views', path.join(__dirname, 'resources/views'));
 app.use(express.static(path.join(__dirname, 'resources')));
@@ -28,7 +39,7 @@ ${isExpressRateLimit ?
 
 app.listen(3000, () => {
     console.log("Server is running on port 3000");
-    console.log("http://localhost:3000");
+    console.log("http://localhost:3000/");
 });
 `
 );

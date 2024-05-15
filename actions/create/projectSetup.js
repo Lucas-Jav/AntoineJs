@@ -16,18 +16,32 @@ const { createFileRoutesJs } = require('../../utils/project/routes/createFileRou
 
 function setupProjectFolders(useRateLimit) {
     createFolders([
-        'app', 'app/Http', 'app/Http/Controllers', 'app/Http/Middleware',
-        'app/Mail', 'app/Models', 'app/Services', 'resources', 'resources/css',
-        'resources/js', 'resources/views', "database", "database/migrations",
-        "database/seeders", 'storage', 'tests', "config"
+        'app', 
+        'app/Http', 
+        'app/Http/Controllers', 
+        'app/Http/Middleware',
+        'app/Mail', 
+        'app/Models', 
+        'app/Services', 
+        'resources', 
+        'resources/css',
+        'resources/js', 
+        'resources/views', 
+        "database", 
+        "database/migrations",
+        "database/seeders", 
+        'storage', 
+        'routes',
+        'tests', 
+        "config"
     ]);
 
     createIndexModels();
-    createConfigFile()
-    createFileRoutesJs()
-    createDotEnvFiles()
-    createGitIgnore()
-    createResources()
+    createConfigFile();
+    createFileRoutesJs();
+    createDotEnvFiles();
+    createGitIgnore();
+    createResources();
     createIndexJsServer(useRateLimit);
     createFileSequelizeJsInConfig();
 }

@@ -18,6 +18,11 @@ function installDependencies(useTypescript, useRateLimit) {
         'sequelize-cli'
     ];
 
+    const globalDependencies = [
+        'nodemon', 
+        'sequelize-cli'
+    ];  
+
     if (useTypescript) {
         devDependencies.push('typescript', '@types/node', '@types/express');
     }
@@ -25,6 +30,10 @@ function installDependencies(useTypescript, useRateLimit) {
     if (useRateLimit) {
         dependencies.push("express-rate-limit");
     }
+
+
+    // Instalar dependências global
+    execSync(`npm install -g ${globalDependencies.join(' ')}`);
 
     // Instalar dependências de produção
     execSync(`npm install ${dependencies.join(' ')}`);
