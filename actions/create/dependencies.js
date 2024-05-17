@@ -6,11 +6,13 @@ function installDependencies(useTypescript, useRateLimit) {
         "express", 
         "pg", 
         "pg-hstore", 
+        "body-parser",
         "sequelize",
         "dotenv",
         "sqlite3",
         "mysql2",
-        "ejs"
+        "ejs",
+        "morgan"
     ];
 
     const devDependencies = [

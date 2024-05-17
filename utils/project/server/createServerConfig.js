@@ -4,11 +4,20 @@ const createIndexJsServer = (isExpressRateLimit) => {
     fs.writeFileSync('./index.js', 
 `
 const express = require("express");
+const bodyParser = require("body-parser");
 const app = express();
 const routes = express.Router();
 const path = require('path');
+const morgan = require('morgan');
 ${isExpressRateLimit ? 
 `const rateLimit = require('express-rate-limit')` : ""}
+
+// Middleware para analisar o corpo das solicitações HTTP
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true }));
+
+// Configuração do morgan para logar no estilo 'dev'
+app.use(morgan('dev'));
 
 ${isExpressRateLimit ? 
 `const limiter = rateLimit({
@@ -30,6 +39,7 @@ routes.use("/", webRoutes);
 
 app.set('views', path.join(__dirname, 'resources/views'));
 app.use(express.static(path.join(__dirname, 'resources')));
+app.use(express.static(path.join(__dirname, 'public')));
 app.set('view engine', 'ejs');
 app.use(express.json());
 app.use(routes);
@@ -37,9 +47,16 @@ ${isExpressRateLimit ?
 `app.use(limiter);
 ` : ""}
 
-app.listen(3000, () => {
-    console.log("Server is running on port 3000");
-    console.log("http://localhost:3000/");
+const PORT = 3000;
+
+app.listen(PORT, () => {
+    const message = "Server running on [http://localhost:" + PORT + "].";
+    const topBottomBorder = '='.repeat(message.length + 8); // Ajuste o número para criar uma borda
+    console.log("\\n" + topBottomBorder + "\\n");
+    console.log('\x1b[43m INFO \x1b[0m '  + message ); // Cor de fundo azul
+    console.log("\\n" + topBottomBorder + "\\n");
+
+    console.log('\x1b[33m' + 'Press Ctrl+C to stop the server' + '\x1b[0m\\n');
 });
 `
 );
