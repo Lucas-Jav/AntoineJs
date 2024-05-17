@@ -11,7 +11,7 @@ const { createIndexJsServer } = require('../../utils/project/server/createServer
 const { createFileSequelizeJsInConfig } = require('../../utils/project/config/createFileSequelizeConfig');
 const { createIndexModels } = require('../../utils/project/app/Models/createIndexModels');
 const { createFileRoutesJs } = require('../../utils/project/routes/createFileRoutesJs');
-
+const { copyPublicFolder } = require('../../utils/project/_public');
 
 
 function setupProjectFolders(useRateLimit) {
@@ -48,6 +48,8 @@ function setupProjectFolders(useRateLimit) {
 
 function setupDependencies(projectName, useTypescript, useRateLimit) {
     fs.mkdirSync(projectName);
+    copyPublicFolder(projectName)
+
     process.chdir(projectName);
     execSync('npm init -y');
 
