@@ -1,5 +1,5 @@
 {
-  "version": "1.0.13",
+  "version": "1.0.14",
   "name": "antoinejs",
   "license": "ISC",
   "author": "lucas",
@@ -13,6 +13,10 @@
     "enquirer": "^2.4.1",
     "fs-extra": "^11.2.0",
     "yargs": "^17.7.2"
+  },
+  "optionalDependencies": {
+    "nodemon": "^3.1.0",
+    "sequelize-cli": "^6.6.2"
   },
   "bin": {
     "antoine": "antoine.js"
