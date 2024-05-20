@@ -12,6 +12,11 @@ const { createFileSequelizeJsInConfig } = require('../../utils/project/config/cr
 const { createIndexModels } = require('../../utils/project/app/Models/createIndexModels');
 const { createFileRoutesJs } = require('../../utils/project/routes/createFileRoutesJs');
 const { copyPublicFolder } = require('../../utils/project/_public');
+const { createSequelizerc } = require('../../utils/project/sequelizerc/createSequelizerc');
+const { createPrettierrc } = require('../../utils/project/prettierrc/createPrettierrc');
+const { createUserModel } = require('../../utils/project/app/Models/createUserModel');
+const { createUserController } = require('../../utils/project/app/Http/Controllers/CreateUserController');
+const { createUserMigration } = require('../../utils/project/database/migrations/createUserMigration');
 
 
 function setupProjectFolders(useRateLimit) {
@@ -37,6 +42,11 @@ function setupProjectFolders(useRateLimit) {
     ]);
 
     createIndexModels();
+    createUserModel();
+    createUserController();
+    createUserMigration();
+    createSequelizerc();
+    createPrettierrc();
     createConfigFile();
     createFileRoutesJs();
     createDotEnvFiles();
@@ -58,6 +68,8 @@ function setupDependencies(projectName, useTypescript, useRateLimit) {
     let packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
     packageJson.scripts = packageJson.scripts || {};
     packageJson.scripts.dev = 'nodemon index.js';
+    packageJson.scripts.format = 'prettier --write .';
+    delete packageJson.scripts.test;
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
     installDependencies(useTypescript, useRateLimit);

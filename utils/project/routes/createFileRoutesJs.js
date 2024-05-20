@@ -13,20 +13,19 @@ module.exports = webRoutes;
 
 
     fs.writeFileSync('./routes/api.js', 
-`
-const express = require("express");
+`const express = require('express');
 const apiRoutes = express.Router();
+const UserController = require('../app/Http/Controllers/UserController');
 
-/* const ExampleController = require("./app/Http/Controllers/ExampleController.js"); */
+apiRoutes.get('/', (req, res) => res.send('Hello World!'));
 
-/* 
-apiRoute.post("/example", ExampleController.post);
-apiRoute.get("/example", ExampleController.get);
-apiRoute.put("/example/:id", ExampleController.put);
-apiRoute.delete("/example/:id", ExampleController.delete); 
-*/
-
-apiRoutes.get("/", (req, res) => res.send("Hello World!"));
+apiRoutes.group("/users", (router) => {
+    router.get('/', UserController.index);
+    router.get('/:id', UserController.show);
+    router.post('/', UserController.store);
+    router.put('/:id', UserController.update);
+    router.delete('/:id', UserController.delete);
+});
 
 module.exports = apiRoutes;
 `);

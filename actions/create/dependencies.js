@@ -12,12 +12,15 @@ function installDependencies(useTypescript, useRateLimit) {
         "sqlite3@5.1.7",
         "mysql2@3.9.7",
         "ejs@3.1.10",
-        "morgan@1.10.0"
+        "morgan@1.10.0",
+        "bcrypt@5.1.1",
+        "express-group-routes@1.1.0"
     ];
 
     const devDependencies = [
         'nodemon@3.1.0', 
-        'sequelize-cli@6.6.2'
+        'sequelize-cli@6.6.2',
+        'prettier@3.2.5'
     ];
 
     const globalDependencies = [
