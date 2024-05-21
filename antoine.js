@@ -6,6 +6,7 @@ const { createMigrationFile } = require('./actions/migration/createMigration');
 const packageJson = require('./package.json'); // Import package.json to access the version
 const { consoleAntoine } = require('./utils/console');
 const { runMigrate } = require('./actions/db/runMigrate');
+const routeListAPI = require('./actions/route/showRoutes');
 
 program
 .version(packageJson.version, '-v, --version', 'Display project version'); // Use version from package.json
@@ -24,6 +25,11 @@ program
   .command('db:migrate')
   .description('Run pending migrations')
   .action(runMigrate);
+
+program
+  .command('route:list')
+  .description('List of all routes')
+  .action(routeListAPI);
 
 program
   .command('migration:create <name>')

@@ -14,7 +14,8 @@ function installDependencies(useTypescript, useRateLimit) {
         "ejs@3.1.10",
         "morgan@1.10.0",
         "bcrypt@5.1.1",
-        "express-group-routes@1.1.0"
+        "express-group-routes@1.1.0",
+        "express-list-endpoints@7.1.0"
     ];
 
     const devDependencies = [

@@ -1,11 +1,9 @@
 const fs = require('fs');
 const { execSync } = require('child_process');
 const { installDependencies } = require('./dependencies');
-const { createConfigFile } = require('../../utils/project/config/createConfigFile');
 const { createGitIgnore } = require('../../utils/project/git/createGitIgnore');
 const { createResources } = require('../../utils/project/Resources/createResources');
 const { removeFolders, createFolders } = require('../../utils/files');
-
 const { createDotEnvFiles } = require('../../utils/project/env/createDotEnvFiles');
 const { createIndexJsServer } = require('../../utils/project/server/createServerConfig');
 const { createFileSequelizeJsInConfig } = require('../../utils/project/config/createFileSequelizeConfig');
@@ -17,12 +15,18 @@ const { createPrettierrc } = require('../../utils/project/prettierrc/createPrett
 const { createUserModel } = require('../../utils/project/app/Models/createUserModel');
 const { createUserController } = require('../../utils/project/app/Http/Controllers/CreateUserController');
 const { createUserMigration } = require('../../utils/project/database/migrations/createUserMigration');
+const { createDatabaseFile } = require('../../utils/project/config/createDatabaseFile');
+const { createRoutesFile } = require('../../utils/project/config/createRoutesFile');
+const { createRateLimitFile } = require('../../utils/project/config/createRateLimitFile');
+const { createAppFile } = require('../../utils/project/config/createAppFile');
+const { createRouteListAPIFile } = require('../../utils/project/app/Console/createRouteListAPIFile');
 
 
 function setupProjectFolders(useRateLimit) {
     createFolders([
         'app', 
         'app/Http', 
+        'app/Console', 
         'app/Http/Controllers', 
         'app/Http/Middleware',
         'app/Mail', 
@@ -47,12 +51,18 @@ function setupProjectFolders(useRateLimit) {
     createUserMigration();
     createSequelizerc();
     createPrettierrc();
-    createConfigFile();
+    createRouteListAPIFile();
+    createDatabaseFile();
+    createRoutesFile();
     createFileRoutesJs();
+    if(useRateLimit) {
+        createRateLimitFile();
+    }
+    createAppFile(useRateLimit);
     createDotEnvFiles();
     createGitIgnore();
     createResources();
-    createIndexJsServer(useRateLimit);
+    createIndexJsServer();
     createFileSequelizeJsInConfig();
 }
 

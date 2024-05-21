@@ -4,7 +4,7 @@ const createFileSequelizeJsInConfig = () => {
     fs.writeFileSync('./config/sequelize.js', 
 `
 const Sequelize = require("sequelize");
-const database = require("./config.js");
+const database = require("./database.js");
 
 const sequelize = new Sequelize(database);
 
