@@ -20,9 +20,11 @@ const { createRoutesFile } = require('../../utils/project/config/createRoutesFil
 const { createRateLimitFile } = require('../../utils/project/config/createRateLimitFile');
 const { createAppFile } = require('../../utils/project/config/createAppFile');
 const { createRouteListAPIFile } = require('../../utils/project/app/Console/createRouteListAPIFile');
+const { createSwaggerDocFile } = require('../../utils/project/config/createSwaggerDocFile');
+const { createTypeControllerFile } = require('../../utils/project/types/createTypeControllerFile');
 
 
-function setupProjectFolders(useRateLimit) {
+function setupProjectFolders(useRateLimit, useSwaggerDoc) {
     createFolders([
         'app', 
         'app/Http', 
@@ -42,7 +44,8 @@ function setupProjectFolders(useRateLimit) {
         'storage', 
         'routes',
         'tests', 
-        "config"
+        "config",
+        "types"
     ]);
 
     createIndexModels();
@@ -53,20 +56,20 @@ function setupProjectFolders(useRateLimit) {
     createPrettierrc();
     createRouteListAPIFile();
     createDatabaseFile();
-    createRoutesFile();
-    createFileRoutesJs();
-    if(useRateLimit) {
-        createRateLimitFile();
-    }
+    createRoutesFile(useSwaggerDoc);
+    createFileRoutesJs(useSwaggerDoc);
+    if(useRateLimit) createRateLimitFile();
+    if (useSwaggerDoc) createSwaggerDocFile();
     createAppFile(useRateLimit);
     createDotEnvFiles();
     createGitIgnore();
     createResources();
     createIndexJsServer();
     createFileSequelizeJsInConfig();
+    createTypeControllerFile();
 }
 
-function setupDependencies(projectName, useTypescript, useRateLimit) {
+function setupDependencies(projectName, useTypescript, useRateLimit, useSwaggerDoc) {
     fs.mkdirSync(projectName);
     copyPublicFolder(projectName)
 
@@ -82,7 +85,7 @@ function setupDependencies(projectName, useTypescript, useRateLimit) {
     delete packageJson.scripts.test;
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
-    installDependencies(useTypescript, useRateLimit);
+    installDependencies(useTypescript, useRateLimit, useSwaggerDoc);
     removeFolders(['./config', './models', './seeders', './migrations']);
 }
 

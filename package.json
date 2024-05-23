@@ -1,5 +1,5 @@
 {
-  "version": "1.1.0",
+  "version": "1.2.0",
   "name": "antoinejs",
   "license": "ISC",
   "author": "lucas",
@@ -24,5 +24,13 @@
   "repository": {
     "type": "git",
     "url": "git+https://github.com/Lucas-Jav/antoinejs.git"
-  }
+  },
+  "keywords": [
+    "antoinejs",
+    "sequelize",
+    "back-end",
+    "laravel",
+    "cli",
+    "javascript"
+  ]
 }
