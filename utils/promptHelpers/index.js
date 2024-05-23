@@ -24,6 +24,12 @@ async function promptProjectDetails() {
             message: 'Use express-rate-limit?',
             initial: false,
         },
+        {
+            type: 'confirm',
+            name: 'useSwaggerDoc',
+            message: 'Use swagger-jsdoc?',
+            initial: false,
+        },
     ]);
 
     return response;

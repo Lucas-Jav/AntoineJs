@@ -1,7 +1,7 @@
 const { execSync } = require('child_process');
 
 
-function installDependencies(useTypescript, useRateLimit) {
+function installDependencies(useTypescript, useRateLimit, useSwaggerDoc) {
     const dependencies = [
         "express@4.19.2", 
         "pg@8.11.5", 
@@ -35,6 +35,11 @@ function installDependencies(useTypescript, useRateLimit) {
 
     if (useRateLimit) {
         dependencies.push("express-rate-limit@7.2.0");
+    }
+
+    if (useSwaggerDoc) {
+        const swaggerDeps = ["swagger-jsdoc@6.2.8", "swagger-ui-express@5.0.0"];
+        swaggerDeps.forEach((dep) => dependencies.push(dep));
     }
 
     // Verificar e instalar dependências globais se necessário

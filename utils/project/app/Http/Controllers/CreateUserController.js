@@ -5,6 +5,7 @@ const createUserController = () => {
 `const User = require('../../Models/user.js');
 const bcrypt = require('bcrypt');
 
+/** @type {import('../../../types/controller').Controller} */
 module.exports = {
     async index(req, res) {
         try {
