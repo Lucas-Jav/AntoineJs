@@ -30,6 +30,12 @@ async function promptProjectDetails() {
             message: 'Use swagger-jsdoc?',
             initial: false,
         },
+        {
+            type: 'select',
+            name: 'frontendStack',
+            message: 'Which frontend stack would you like to use?',
+            choices: ['React', 'Vue.js', 'None']
+        }
     ]);
 
     return response;

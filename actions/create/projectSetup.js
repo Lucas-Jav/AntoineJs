@@ -22,9 +22,10 @@ const { createAppFile } = require('../../utils/project/config/createAppFile');
 const { createRouteListAPIFile } = require('../../utils/project/app/Console/createRouteListAPIFile');
 const { createSwaggerDocFile } = require('../../utils/project/config/createSwaggerDocFile');
 const { createTypeControllerFile } = require('../../utils/project/types/createTypeControllerFile');
+const { addReact } = require('../../utils/project/react/addReact');
 
 
-function setupProjectFolders(useRateLimit, useSwaggerDoc) {
+function setupProjectFolders(useRateLimit, useSwaggerDoc, frontendStack) {
     createFolders([
         'app', 
         'app/Http', 
@@ -67,9 +68,12 @@ function setupProjectFolders(useRateLimit, useSwaggerDoc) {
     createIndexJsServer();
     createFileSequelizeJsInConfig();
     createTypeControllerFile();
+    if (frontendStack !== "None") {
+        if (frontendStack === "React") addReact();
+    }
 }
 
-function setupDependencies(projectName, useTypescript, useRateLimit, useSwaggerDoc) {
+function setupDependencies(projectName, useTypescript, useRateLimit, useSwaggerDoc, frontendStack) {
     fs.mkdirSync(projectName);
     copyPublicFolder(projectName)
 
@@ -80,12 +84,13 @@ function setupDependencies(projectName, useTypescript, useRateLimit, useSwaggerD
     const packageJsonPath = './package.json';
     let packageJson = JSON.parse(fs.readFileSync(packageJsonPath, 'utf8'));
     packageJson.scripts = packageJson.scripts || {};
-    packageJson.scripts.dev = 'nodemon index.js';
+    packageJson.scripts.serve = 'nodemon index.js';
+    if(frontendStack !== "None") packageJson.scripts.dev = 'vite';
     packageJson.scripts.format = 'prettier --write .';
     delete packageJson.scripts.test;
     fs.writeFileSync(packageJsonPath, JSON.stringify(packageJson, null, 2));
 
-    installDependencies(useTypescript, useRateLimit, useSwaggerDoc);
+    installDependencies(useTypescript, useRateLimit, useSwaggerDoc, frontendStack);
     removeFolders(['./config', './models', './seeders', './migrations']);
 }
 

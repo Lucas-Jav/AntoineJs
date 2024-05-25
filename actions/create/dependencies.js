@@ -1,7 +1,7 @@
 const { execSync } = require('child_process');
 
 
-function installDependencies(useTypescript, useRateLimit, useSwaggerDoc) {
+function installDependencies(useTypescript, useRateLimit, useSwaggerDoc, frontendStack) {
     const dependencies = [
         "express@4.19.2", 
         "pg@8.11.5", 
@@ -28,6 +28,23 @@ function installDependencies(useTypescript, useRateLimit, useSwaggerDoc) {
         'nodemon@3.1.0', 
         'sequelize-cli@6.6.2'
     ];  
+
+    if (frontendStack !== "None") {
+        if (frontendStack === "React") {
+            const reactDependencies = [
+                "@vitejs/plugin-react-refresh@1.3.6", 
+                "@vitejs/plugin-react@4.3.0", 
+                "react@18.3.1",
+                "react-dom@18.3.1",
+                "react-refresh@0.14.2"
+            ];
+
+            const reactDevDependencies = ["vite@5.0.0"];
+
+            reactDependencies.forEach((dep) => dependencies.push(dep));
+            reactDevDependencies.forEach((dep) => devDependencies.push(dep));
+        }        
+    }
 
     if (useTypescript) {
         devDependencies.push('typescript', '@types/node', '@types/express');
