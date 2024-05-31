@@ -43,7 +43,18 @@ function installDependencies(useTypescript, useRateLimit, useSwaggerDoc, fronten
 
             reactDependencies.forEach((dep) => dependencies.push(dep));
             reactDevDependencies.forEach((dep) => devDependencies.push(dep));
-        }        
+        }    
+        
+        if (frontendStack === "Vue.js") {
+            const vueDependencies = [
+                "@vitejs/plugin-vue@5.0.5"
+            ];
+
+            const vueDevDependencies = ["vite@5.0.0"];
+
+            vueDependencies.forEach((dep) => dependencies.push(dep));
+            vueDevDependencies.forEach((dep) => devDependencies.push(dep));
+        }
     }
 
     if (useTypescript) {

@@ -23,6 +23,7 @@ const { createRouteListAPIFile } = require('../../utils/project/app/Console/crea
 const { createSwaggerDocFile } = require('../../utils/project/config/createSwaggerDocFile');
 const { createTypeControllerFile } = require('../../utils/project/types/createTypeControllerFile');
 const { addReact } = require('../../utils/project/react/addReact');
+const { addVue } = require('../../utils/project/vue/addVue');
 
 
 function setupProjectFolders(useRateLimit, useSwaggerDoc, frontendStack) {
@@ -70,6 +71,7 @@ function setupProjectFolders(useRateLimit, useSwaggerDoc, frontendStack) {
     createTypeControllerFile();
     if (frontendStack !== "None") {
         if (frontendStack === "React") addReact();
+        if (frontendStack === "Vue.js") addVue();
     }
 }
 
